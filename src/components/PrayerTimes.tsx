@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocation } from './LocationProvider';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface PrayerTimesData {
   [key: string]: string;
@@ -12,13 +12,7 @@ interface PrayerTimesProps {
 }
 
 export default function PrayerTimes({ onPrayerTimesFetched }: PrayerTimesProps) {
-  const { location, error, requestLocation } = useLocation();
-
-  useEffect(() => {
-    if (!location) {
-      requestLocation();
-    }
-  }, [location, requestLocation]);
+  const { location, error } = useLocation();
 
   useEffect(() => {
     if (location) {
@@ -44,8 +38,8 @@ export default function PrayerTimes({ onPrayerTimesFetched }: PrayerTimesProps) 
   }
 
   if (!location) {
-    return <p>Requesting location...</p>;
+    return null;
   }
 
-  return <p>Loading prayer times...</p>;
+  return null;
 } 

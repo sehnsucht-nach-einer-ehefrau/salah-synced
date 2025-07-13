@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { users } from '@/db/schema';
-import { eq } from 'drizzle-orm';
 import { kv } from '@vercel/kv';
+import { isNotNull } from "drizzle-orm";
 
 async function sendTelegramMessage(chatId: string, text: string) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -35,9 +35,12 @@ export async function GET(request: Request) {
     });
   }
   
-  const allUsers = await db.select().from(users);
+  const usersToNotify = await db
+    .select()
+    .from(users)
+    .where(isNotNull(users.telegramChatId));
 
-  for (const user of allUsers) {
+  for (const user of usersToNotify) {
     if (user.telegramChatId) {
       // This is a simplified logic.
       // In a real application, we would need to determine the current activity

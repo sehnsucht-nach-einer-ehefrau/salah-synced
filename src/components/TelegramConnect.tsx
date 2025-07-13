@@ -14,15 +14,26 @@ export default function TelegramConnect() {
 
   return (
     <div className="p-5">
-      <h2 className="text-xl font-bold">Connect to Telegram</h2>
+      <h3 className="text-lg font-medium">Connect to Telegram</h3>
+      <p className="text-sm text-muted-foreground">
+        Get notifications for your schedule by connecting your Telegram account.
+      </p>
       <ol className="list-decimal list-inside mt-4 space-y-2">
-        <li>Open Telegram and search for the "BotFather".</li>
-        <li>Send <code>/newbot</code> to create a new bot.</li>
-        <li>Follow the instructions and get your bot token.</li>
-        <li>Search for your bot in Telegram and send it a message.</li>
-        <li>Open a new tab and go to <code>https://api.telegram.org/botYOUR_BOT_TOKEN/getUpdates</code>.</li>
-        <li>Find the "chat" object and copy the "id".</li>
+        <li>Open Telegram and search for the &quot;Salah Synced&quot; bot.</li>
+        <li>Start a chat with the bot and send the following command:</li>
+        <pre className="bg-gray-100 p-2 rounded-md text-sm">
+          <code>/connect {`{your-user-id}`}</code>
+        </pre>
+        <li>You will receive a confirmation message from the bot.</li>
       </ol>
+      <div className="mt-4">
+        <p className="text-sm">
+          Your User ID is: <code className="bg-gray-100 p-1 rounded-md">{`{user-id}`}</code>
+        </p>
+        <p className="text-xs text-muted-foreground mt-1">
+          You can find your User ID in your profile settings.
+        </p>
+      </div>
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <div>
           <label htmlFor="chatId" className="block text-sm font-medium text-gray-700">

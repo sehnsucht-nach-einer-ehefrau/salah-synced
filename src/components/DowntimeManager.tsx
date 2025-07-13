@@ -109,12 +109,11 @@ function ActivityForm({ type }: { type: 'downtime_duration' | 'downtime_interrup
 
 function ActivityItem({ activity }: { activity: Activity }) {
   const handleDelete = async () => {
-    "use server";
     await deleteActivity(activity.id);
   };
 
   return (
-    <li className="p-2 bg-gray-700 rounded-lg flex justify-between items-center">
+    <div className="flex items-center justify-between p-2 rounded-md hover:bg-gray-100">
       <div>
         <p className="font-semibold">{activity.title}</p>
         <p className="text-sm text-gray-400">
@@ -124,6 +123,6 @@ function ActivityItem({ activity }: { activity: Activity }) {
       <form action={handleDelete}>
         <button type="submit" className="text-red-500 hover:text-red-400">Delete</button>
       </form>
-    </li>
+    </div>
   )
 } 

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface Location {
   latitude: number;
@@ -10,46 +10,42 @@ interface Location {
 interface LocationContextType {
   location: Location | null;
   error: string | null;
-  requestLocation: () => void;
 }
 
-const LocationContext = createContext<LocationContextType | undefined>(undefined);
+const LocationContext = createContext<LocationContextType>({
+  location: null,
+  error: null,
+});
 
-export const LocationProvider = ({ children }: { children: ReactNode }) => {
+export const useLocation = () => useContext(LocationContext);
+
+export const LocationProvider = ({ children }: { children: React.ReactNode }) => {
   const [location, setLocation] = useState<Location | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const requestLocation = () => {
+  useEffect(() => {
     if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser");
+      setError('Geolocation is not supported by your browser.');
       return;
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setError(null);
-      },
-      (err) => {
-        setError(err.message);
-      }
-    );
-  };
+    const onSuccess = (position: GeolocationPosition) => {
+      setLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    };
+
+    const onError = (error: GeolocationPositionError) => {
+      setError(`Failed to get location: ${error.message}`);
+    };
+
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+  }, []);
 
   return (
-    <LocationContext.Provider value={{ location, error, requestLocation }}>
+    <LocationContext.Provider value={{ location, error }}>
       {children}
     </LocationContext.Provider>
   );
-};
-
-export const useLocation = () => {
-  const context = useContext(LocationContext);
-  if (context === undefined) {
-    throw new Error('useLocation must be used within a LocationProvider');
-  }
-  return context;
 }; 

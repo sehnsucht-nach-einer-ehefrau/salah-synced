@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #f0f0f0;
+  --text-primary: #000;
+  --text-secondary: #555;
+  --card-background: #fff;
+}
+
+.dark {
+  --background: #121212;
+  --text-primary: #fff;
+  --text-secondary: #aaa;
+  --card-background: #1e1e1e;
+}
+
 body {
-  background-color: #f0f0f0;
+  background-color: var(--background);
+  color: var(--text-primary);
 }
